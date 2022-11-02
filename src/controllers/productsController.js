@@ -26,7 +26,7 @@ const controller = {
 	// Create -  Method to store
 	store: (req, res) => {
 		products.push(req.body);
-      fs.writeFileSync("../data/productsDataBase.json", JSON.stringify(products));
+      fs.writeFileSync(productsFilePath, JSON.stringify(products));
       res.render("products", {products: products});
 	},
 
@@ -39,14 +39,14 @@ const controller = {
 	// Update - Method to update
 	update: (req, res) => {
       products.find( element => element.id == req.params.id) = req.body;
-      fs.writeFileSync("../data/productsDataBase.json", JSON.stringify(products));
+      fs.writeFileSync(productsFilePath, JSON.stringify(products));
       res.render("products", {products: products});
 	},
 
 	// Delete - Delete one product from DB
 	destroy : (req, res) => {
 		products = products.filter( element => element.id != req.params.id);
-      fs.writeFileSync("../data/productsDataBase.json", JSON.stringify(products));
+      fs.writeFileSync(productsFilePath, JSON.stringify(products));
       res.render("products", {products: products});
 	}
 };
