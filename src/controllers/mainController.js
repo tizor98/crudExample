@@ -8,6 +8,7 @@ const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const controller = {
 	index: (req, res) => {
+      // Se crea la lista de productos visitados y en oferta
       const visited = products.filter( item => item.category == "visited" );
       const inSale = products.filter( item => item.category == "in-sale" );
 

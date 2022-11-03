@@ -16,7 +16,7 @@ const storage = multer.diskStorage( { // En qué carpeta se guardarán los archi
    }
 })
 
-const upload = multer({storage: storage}) // establece la configuración para guardar archivos, se usa en los get
+const upload = multer({storage: storage}) // establece la configuración para guardar archivos, se usa en métodos
 
 // ************ Controller Require ************
 const productsController = require('../controllers/productsController');
@@ -26,7 +26,7 @@ router.get('/', productsController.products);
 
 /*** CREATE ONE PRODUCT ***/ 
 router.get('/create', productsController.create); 
-router.post('/', upload.single("productImage"), productsController.store); 
+router.post('/', upload.single("productImage"), productsController.store); // Puede subir archivos
 
 
 /*** GET ONE PRODUCT ***/ 
@@ -34,7 +34,7 @@ router.get('/detail/:id', productsController.detail);
 
 /*** EDIT ONE PRODUCT ***/ 
 router.get('/edit/:id', productsController.edit); 
-router.put('/', upload.single("productImage"), productsController.update); 
+router.put('/', upload.single("productImage"), productsController.update); // Puede subir archivos
 
 
 /*** DELETE ONE PRODUCT***/ 
