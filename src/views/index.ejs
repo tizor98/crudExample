@@ -19,7 +19,7 @@
 			</div>
 			<!-- Show the "visited" products -->
          
-         <% products.filter( item => item.category == "visited" ).forEach(element => { %>
+         <% visited.forEach(element => { %>
             
             <div class="col-12 col-sm-6 col-lg-3">
                <section class="product-box">
@@ -28,7 +28,7 @@
                         <img src="/images/products/<%= element.image %>" alt="imagen de producto">
                      </figure>
                      <article class="product-box_data">
-                        <h2><%= element.price * (1-element.discount) %>></h2>
+                        <h2><%= element.price * (1-element.discount/100) %>></h2>
                         <span>DISCOUNT <%= element.discount %>% OFF</span>
                         <p><%= element.name %></p>
                         <i class="fas fa-truck"></i>
@@ -51,7 +51,7 @@
 			</div>
 			<!-- Show the "in-sale" products -->
          
-         <% products.filter( item => item.category == "in-sale" ).forEach(element => { %>
+         <% inSale.forEach(element => { %>
             
             <div class="col-12 col-sm-6 col-lg-3">
                <section class="product-box">
@@ -60,7 +60,7 @@
                         <img src="/images/products/<%= element.image %>" alt="imagen de producto">
                      </figure>
                      <article class="product-box_data">
-                        <h2><%= element.price * (1-element.discount) %>></h2>
+                        <h2><%= element.price * (1-element.discount/100) %>></h2>
                         <span>DISCOUNT <%= element.discount %>% OFF</span>
                         <p><%= element.name %></p>
                         <i class="fas fa-truck"></i>

@@ -32,7 +32,7 @@
 								<b>DISCOUNT <%= product.discount %>%  OFF</b>
 							</p>
 							<p class="product-detail-price">
-								$<%= product.price * (1 - product.discount) %> 
+								$<%= product.price * (1 - product.discount/100) %> 
 							</p>
 							<p class="product-detail-price">
 								$<%= product.price %>

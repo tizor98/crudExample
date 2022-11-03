@@ -23,7 +23,7 @@
 							<img src="/images/products/<%= products[i].image %> " alt="imagen de producto">
 						</figure>
 						<article class="product-box_data">
-							<h2>$<%= products[i].price * (1 - products[i].discount) %> </h2>
+							<h2>$<%= products[i].price * (1 - products[i].discount/100) %> </h2>
 							<span>DISCOUNT <%= products[i].discount %>%  OFF</span>
 							<p><%= products[i].name %> </p>
 							<i class="fas fa-truck"></i>

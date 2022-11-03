@@ -1,24 +1,10 @@
+const { json } = require('express');
 const fs = require('fs');
 const path = require('path');
 
-// Ejecutando lo necesario para subir archivos con Multer
-const multer = require("multer");
-
-const storage = multer.diskStorage( { // En qué carpeta se guardarán los archivos y cómo se nombrarán
-   destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, "../public/images"));
-   },
-   filename: (req, file, cb) => {
-      const newFileName = Date.now() + "_img_" + path.extname(file.originalname);
-      cb(null, newFileName);
-   }
-})
-
-const upload = multer({storage: storage}) // establece la configuración para guardar archivos, se usa en los get
-
 // Guardando la ubicación de los datos
 const productsFilePath = path.join(__dirname, '../data/productsDataBase.json');
-const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
+let products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
 
 const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
@@ -42,8 +28,18 @@ const controller = {
 	
 	// Create -  Method to store
 	store: (req, res) => {
-		products.push(req.body);
+      products.push( {
+         id: products.length + 1,
+         name: req.body.name,
+         price: parseInt(req.body.price),
+         discount: parseInt(req.body.discount),
+         category: req.body.category,
+         description: req.body.description,
+         image: req.file.filename,
+      });
+
       fs.writeFileSync(productsFilePath, JSON.stringify(products));
+      
       res.render("products", {products: products});
 	},
 
@@ -51,20 +47,35 @@ const controller = {
 	edit: (req, res) => {
       const product = products.find( element => element.id == req.params.id);
 		res.render("product-edit-form", {product: product});
-
 	},
 	// Update - Method to update
 	update: (req, res) => {
-      products.find( element => element.id == req.params.id) = req.body;
+      let product = products.find( element => element.id == req.body.id);
+      
+      fs.unlinkSync(path.join(__dirname, "../../public/images/products", product.image));
+      
+      product.id = parseInt(req.body.id);
+      product.name = req.body.name;
+      product.price = parseInt(req.body.price);
+      product.discount = parseInt(req.body.discount);
+      product.category = req.body.category;
+      product.description = req.body.description;
+      product.image = req.file.filename;
+      
       fs.writeFileSync(productsFilePath, JSON.stringify(products));
+      
       res.render("products", {products: products});
 	},
 
 	// Delete - Delete one product from DB
 	destroy : (req, res) => {
-		products = products.filter( element => element.id != req.params.id);
+      const imageProduct = products.find( element => element.id == req.params.id).image;
+      fs.unlinkSync(path.join(__dirname, "../../public/images/products", imageProduct));
+		
+      products = products.filter( element => element.id != req.params.id);
       fs.writeFileSync(productsFilePath, JSON.stringify(products));
-      res.render("products", {products: products});
+      
+      res.redirect("/products");
 	}
 };
 
